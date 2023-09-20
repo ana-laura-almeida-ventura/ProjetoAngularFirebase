@@ -42,6 +42,30 @@ export class HomePage {
     })
   }
 
+  editar(id: any){
+    this.isLoading = true;
+    fetch('http://localhost/API_Atividade/funcionario/editar_funcionario.php',
+			{
+			  method: 'POST',
+			  headers: {
+			    'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify({ CodFun: id })
+			}
+		)
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+      this.getFuncionarios();
+    })
+    .catch(erro => {
+      console.log(erro);
+    })
+    .finally(()=>{
+      this.isLoading = false;
+    })
+  }
+
   inserir(dados: any){
     this.isLoading = true;
     fetch('http://localhost/API_Atividade/funcionario/inserir_funcionario.php',
@@ -50,7 +74,7 @@ export class HomePage {
 			  headers: {
 			    'Content-Type': 'application/json',
 			  },
-			  body: JSON.stringify(dados)
+			  body: JSON.stringify(dados) 
 			}
 		)
     .then(response => response.json())
@@ -68,10 +92,22 @@ export class HomePage {
 
   getFuncionarios(){
     this.isLoading = true;
-    fetch('http://localhost/API_Atividade/funcionario/listar_fucionarios.php')
+	
+		let funcionario = {};
+
+    fetch('http://localhost/API_Atividade/funcionario/listar_fucionarios.php',
+			{
+			  method: 'POST',
+			  headers: {
+			    'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify(funcionario)
+			}
+		)
     .then(response => response.json())
     .then(response => {
-      this.funcionarios = response.funcionarios;
+      this.funcionarios = response.funcionarios
+      console.log(response);
     })
     .catch(erro => {
       console.log(erro);
