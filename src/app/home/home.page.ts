@@ -1,5 +1,7 @@
 import { Component, ViewChild  } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { OverlayEventDetail } from '@ionic/core/components';
+import { IonModal } from '@ionic/angular';
 import { AuthenticateService } from '../services/auth.service';
 import { CrudService } from '../services/crud.service';
 import { Storage, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage';
@@ -12,12 +14,17 @@ import { MessageService } from '../services/message.service';
 })
 export class HomePage {
   @ViewChild('formInserir', { static: false }) formInserir!: NgForm;
+  @ViewChild(IonModal) modal!: IonModal;
   isLoading: boolean = false;
   funcionarios: any;
-  mensagem: any
+  nome: any;
 
   constructor() {
     this.getFuncionarios();
+  }
+
+  cancel() {
+    this.modal.dismiss(null, 'cancel');
   }
 
   remover(id: any){
@@ -110,7 +117,40 @@ export class HomePage {
     .then(response => response.json())
     .then(response => {
       this.funcionarios = response.funcionarios
+      // console.log(response);
+    })
+    .catch(erro => {
+      console.log(erro);
+    })
+    .finally(()=>{
+      this.isLoading = false;
+    })
+  }
+
+
+  pegarDados(id: any){
+    this.isLoading = true;
+	
+		let funcionario = { CodFun: id, Nome: this.nome };
+
+    fetch('http://localhost/API_Atividade/funcionario/pegarDados.php',
+			{
+			  method: 'POST',
+			  headers: {
+			    'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify(funcionario)
+			}
+		)
+    .then(response => response.json())
+    .then(response => {
       console.log(response);
+      for(var i in response) {
+        this.nome = funcionario.Nome
+        console.log(this.nome)
+      }
+      // id = funcionario.CodFun
+      // console.log(id)
     })
     .catch(erro => {
       console.log(erro);

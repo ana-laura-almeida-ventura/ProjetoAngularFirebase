@@ -6,7 +6,77 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-button id="open-modal">Cadastrar</ion-button>
+  <ion-row>
+    <ion-col>
+      <ion-list>
+        <ng-container *ngFor="let funcionario of this.funcionarios">
+          <ion-item>
+            <ion-label>{{ funcionario.Nome }} - {{ funcionario.Cargo }}</ion-label>
+            <ion-icon name="pencil-outline" (click)="pegarDados(funcionario.CodFun)"></ion-icon>
+            <ion-icon name="trash-outline" (click)="remover(funcionario.CodFun)"></ion-icon>
+          </ion-item>
+        </ng-container>
+        
+      </ion-list>
+    </ion-col>
+  </ion-row>
+
+  <ion-modal trigger="open-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Cadastrar</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cancel()">Fechar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-row>
+          <ion-col>
+            <form #formInserir="ngForm" (ngSubmit)="inserir(formInserir.value)">
+              <ion-item>
+                <ion-input label="Sobrenome" ngModel name="sobrenome"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input label="Nome" ngModel name="nome"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input label="Cargo" ngModel name="cargo"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input label="Endereço" ngModel name="endereco"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input label="Endereço" ngModel name="dataNasc"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input label="Cidade" ngModel name="cidade"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input label="CEP" ngModel name="cep"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input label="País" ngModel name="pais"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input label="Fone" ngModel name="fone"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input label="Salário" ngModel name="salario"></ion-input>
+              </ion-item>
+              <ion-button type="submit">Salvar</ion-button>
+            </form>
+          </ion-col>
+        </ion-row>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<!-- <ion-content [fullscreen]="true">
 
   <ion-row>
     <ion-col>
@@ -61,4 +131,4 @@
     </ion-col>
   </ion-row>
 
-</ion-content>
+</ion-content> -->
