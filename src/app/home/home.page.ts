@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild  } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { AuthenticateService } from '../services/auth.service';
 import { CrudService } from '../services/crud.service';
 import { Storage, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage';
@@ -10,6 +11,7 @@ import { MessageService } from '../services/message.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  @ViewChild('formInserir', { static: false }) formInserir!: NgForm;
   isLoading: boolean = false;
   funcionarios: any;
   mensagem: any
@@ -81,6 +83,7 @@ export class HomePage {
     .then(response => {
       console.log(response);
       this.getFuncionarios();
+      this.resetForm();
     })
     .catch(erro => {
       console.log(erro);
@@ -115,6 +118,10 @@ export class HomePage {
     .finally(()=>{
       this.isLoading = false;
     })
+  }
+
+  resetForm() {
+    this.formInserir.resetForm();
   }
 
 }
