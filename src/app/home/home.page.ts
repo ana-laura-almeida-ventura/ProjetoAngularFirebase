@@ -17,7 +17,9 @@ export class HomePage {
   @ViewChild('formInserir', { static: false }) formInserir!: NgForm;
   @ViewChild(IonModal) modal!: IonModal;
   isLoading: boolean = false;
+  isEditing: boolean = false;
   funcionarios: any;
+  CodFun: any
   nome: any;
   sobrenome: any;
   cargo: any;
@@ -87,6 +89,32 @@ export class HomePage {
         this.isLoading = false;
       });
   }
+
+  atualizar(dados: any) {
+    this.isLoading = true;
+    let url = 'http://localhost/API_Atividade/funcionario/editar_funcionario.php'; // Altere a URL conforme necessário
+  
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dados),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        this.getFuncionarios();
+        this.resetForm();
+      })
+      .catch((erro) => {
+        console.log(erro);
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
+  }
+  
   
 
   getFuncionarios(){
@@ -117,32 +145,36 @@ export class HomePage {
   }
 
 
-  // pegarDados(codFun: any) {
-  //   fetch(`http://localhost/API_Atividade/funcionario/pegarDados.php`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ CodFun: codFun }),
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       this.modal.present();
-  //       this.sobrenome = data.Sobrenome;
-  //       this.nome = data.Nome;
-  //       this.cargo = data.Cargo;
-  //       this.endereco = data.Endereco;
-  //       this.dataNasc = data.DataNasc;
-  //       this.cidade = data.Cidade;
-  //       this.cep = data.CEP;
-  //       this.pais = data.Pais;
-  //       this.fone = data.Fone;
-  //       this.salario = data.Salario;
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //     });
-  // } 
+  pegarDados(codFun: any) {
+    this.isEditing = true;
+    fetch(`http://localhost/API_Atividade/funcionario/pegarDados.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ CodFun: codFun }),
+    })
+      .then(response => response.json())
+      .then(response => {
+        let data = response.funcionarios[0]
+        this.modal.present();
+        this.CodFun = data.CodFun;
+        this.sobrenome = data.Sobrenome;
+        this.nome = data.Nome;
+        this.cargo = data.Cargo;
+        this.endereco = data.Endereco;
+        this.dataNasc = data.DataNasc;
+        this.cidade = data.Cidade;
+        this.cep = data.CEP;
+        this.pais = data.Pais;
+        this.fone = data.Fone;
+        this.salario = data.Salario;
+        console.log(this.sobrenome)
+      })
+      .catch(error => {''
+        console.error(error);
+      });
+  } 
   
   
   resetForm() {

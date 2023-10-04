@@ -1,12 +1,4 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true" class="ion-padding"> 
   <ion-button id="open-modal">Cadastrar</ion-button>
   <ion-row>
     <ion-col>
@@ -14,7 +6,7 @@
         <ng-container *ngFor="let funcionario of this.funcionarios">
           <ion-item>
             <ion-label>{{ funcionario.Nome }} - {{ funcionario.Cargo }}</ion-label>
-            <ion-button color="warning"><ion-icon name="pencil-outline" ></ion-icon></ion-button>
+            <ion-button color="warning" (click)="pegarDados(funcionario.CodFun)"><ion-icon name="pencil-outline" ></ion-icon></ion-button>
             
             <ion-button (click)="remover(funcionario.CodFun)" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
           </ion-item>
@@ -37,7 +29,10 @@
       <ion-content>
         <ion-row>
           <ion-col>
-            <form #formInserir="ngForm" (ngSubmit)="inserir(formInserir.value)">
+            <form #formInserir="ngForm" (ngSubmit)="this.isEditing ? atualizar(formInserir.value) : inserir(formInserir.value)">
+              <ion-item>
+                <ion-input type="hidden" label="Código" [(ngModel)]="CodFun" name="CodFun"></ion-input>
+              </ion-item>
               <ion-item>
                 <ion-input label="Nome" [(ngModel)]="nome" name="nome"></ion-input>
               </ion-item>
