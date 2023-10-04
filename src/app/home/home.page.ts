@@ -18,6 +18,7 @@ export class HomePage {
   isLoading: boolean = false;
   funcionarios: any;
   nome: any;
+  dadosFuncionario  : any
 
   constructor() {
     this.getFuncionarios();
@@ -29,7 +30,7 @@ export class HomePage {
 
   remover(id: any){
     this.isLoading = true;
-    fetch('http://localhost/API_Atividade/funcionario/remover_funcionario.php',
+    fetch('http://projeto/API_Atividade/funcionario/remover_funcionario.php',
 			{
 			  method: 'POST',
 			  headers: {
@@ -53,7 +54,7 @@ export class HomePage {
 
   editar(id: any){
     this.isLoading = true;
-    fetch('http://localhost/API_Atividade/funcionario/editar_funcionario.php',
+    fetch('http://projeto/API_Atividade/funcionario/editar_funcionario.php',
 			{
 			  method: 'POST',
 			  headers: {
@@ -77,7 +78,7 @@ export class HomePage {
 
   inserir(dados: any){
     this.isLoading = true;
-    fetch('http://localhost/API_Atividade/funcionario/inserir_funcionario.php',
+    fetch('http://projeto/API_Atividade/funcionario/inserir_funcionario.php',
 			{
 			  method: 'POST',
 			  headers: {
@@ -105,7 +106,7 @@ export class HomePage {
 	
 		let funcionario = {};
 
-    fetch('http://localhost/API_Atividade/funcionario/listar_fucionarios.php',
+    fetch('http://projeto/API_Atividade/funcionario/listar_fucionarios.php',
 			{
 			  method: 'POST',
 			  headers: {
@@ -130,36 +131,28 @@ export class HomePage {
 
   pegarDados(id: any){
     this.isLoading = true;
-	
-		let funcionario = { CodFun: id, Nome: this.nome };
-
-    fetch('http://localhost/API_Atividade/funcionario/pegarDados.php',
-			{
-			  method: 'POST',
-			  headers: {
-			    'Content-Type': 'application/json',
-			  },
-			  body: JSON.stringify(funcionario)
-			}
-		)
+  
+    fetch('http://projeto/API_Atividade/funcionario/pegarDados.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ CodFun: id })
+    })
     .then(response => response.json())
     .then(response => {
       console.log(response);
-      for(var i in response) {
-        this.nome = funcionario.Nome
-        console.log(this.nome)
-      }
-      // id = funcionario.CodFun
-      // console.log(id)
+      this.dadosFuncionario = response; // Atribuir os dados ao objeto dadosFuncionario
+      this.modal.present();
     })
     .catch(erro => {
       console.log(erro);
     })
-    .finally(()=>{
+    .finally(() => {
       this.isLoading = false;
     })
   }
-
+  
   resetForm() {
     this.formInserir.resetForm();
   }
