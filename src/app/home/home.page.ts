@@ -42,7 +42,7 @@ export class HomePage {
 
   remover(id: any){
     this.isLoading = true;
-    fetch('http://projeto/API_Atividade/funcionario/remover_funcionario.php',
+    fetch('http://localhost/API_Atividade/funcionario/remover_funcionario.php',
 			{
 			  method: 'POST',
 			  headers: {
@@ -66,11 +66,7 @@ export class HomePage {
 
   inserir(dados: any) {
     this.isLoading = true;
-    let url = 'http://projeto/API_Atividade/funcionario/inserir_funcionario.php';
-    if (this.dadosFuncionario.CodFun) {
-      // If CodFun exists, it's an update operation
-      url = 'http://projeto/API_Atividade/funcionario/atualizar_funcionario.php';
-    }
+    let url = 'http://localhost/API_Atividade/funcionario/inserir_funcionario.php';
     fetch(url, {
       method: 'POST',
       headers: {
@@ -83,7 +79,6 @@ export class HomePage {
         console.log(response);
         this.getFuncionarios();
         this.resetForm();
-        this.cancel();
       })
       .catch((erro) => {
         console.log(erro);
@@ -99,7 +94,7 @@ export class HomePage {
 	
 		let funcionario = {};
 
-    fetch('http://projeto/API_Atividade/funcionario/listar_fucionarios.php',
+    fetch('http://localhost/API_Atividade/funcionario/listar_fucionarios.php',
 			{
 			  method: 'POST',
 			  headers: {
@@ -122,34 +117,32 @@ export class HomePage {
   }
 
 
-  pegarDados(codFun: any) {
-    fetch(`http://projeto/API_Atividade/funcionario/pegarDados.php`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ CodFun: codFun }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        this.modal.present();
-        this.sobrenome = data.Sobrenome;
-        this.nome = data.Nome;
-        this.cargo = data.Cargo;
-        this.endereco = data.Endereco;
-        this.dataNasc = data.DataNasc;
-        this.cidade = data.Cidade;
-        this.cep = data.CEP;
-        this.pais = data.Pais;
-        this.fone = data.Fone;
-        this.salario = data.Salario;
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
-  
-  
+  // pegarDados(codFun: any) {
+  //   fetch(`http://localhost/API_Atividade/funcionario/pegarDados.php`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ CodFun: codFun }),
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.modal.present();
+  //       this.sobrenome = data.Sobrenome;
+  //       this.nome = data.Nome;
+  //       this.cargo = data.Cargo;
+  //       this.endereco = data.Endereco;
+  //       this.dataNasc = data.DataNasc;
+  //       this.cidade = data.Cidade;
+  //       this.cep = data.CEP;
+  //       this.pais = data.Pais;
+  //       this.fone = data.Fone;
+  //       this.salario = data.Salario;
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     });
+  // } 
   
   
   resetForm() {
